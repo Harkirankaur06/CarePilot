@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarePilot</title>
+     <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+    <link rel="stylesheet" href="carepilot.css">
+</head>
+<body>
+    <!-- Header section -->
+     <header class="header" >
+        <a href="#" class="logo"> <i class="ri-service-fill"></i> CarePilot </a>
+        <nav class="navbar">  
+            <a href="#home">HOME </a>
+            <a href="#home">ABOUT </a>
+            <a href="#home">CONTACT </a>
+            <button class="loginbtn">Log-in</button>
+        </nav>
+     </header>
+
+     <!-- Home Page -->
+      
+     <section class="home" id="home">
+        <div class="container">
+            <div class="history">
+                <div class="history-header">
+                    <p>Chat History</p>
+                    <div class="history-icons"> <i class="ri-search-line"></i> <i class="ri-edit-box-fill" title="New Chat" onclick="startNewChat()"></i>
+                </div>
+            </div>
+        <div class="chat-list">
+              <div class="chat-item" onclick="loadChat('Chat-1')">
+                <p>Conversation with Serena</p>
+                <span>10 May, 2025</span>
+        </div>
+            <div class="chat-item" onclick="loadChat('chat-2')">
+                <p>Cold Symptoms</p>
+                <span>8 May, 2025</span>
+            </div>
+        </div>
+            </div>
+        <!-- <div class="leftpanel"> -->
+      <!-- <img src="photos/doctor.jpg" alt="Doctor" class="doctorimg"> -->
+        <!-- </div> -->
+<div class="chatpanel">
+    <div class="chatbox">
+        <p>Hi, I am Serena</p>
+
+        <div class="inputarea">
+            <input type="text" placeholder="Type here…">
+            <button><i class="ri-send-plane-fill"></i></button>
+        </div>
+
+        <div class="chatbuttons">
+            <button>Upload Images</button>
+            <button>Download Chat</button>
+        </div>
+    </div>
+
+    <div class="options">
+        <div class="optionbox">
+            <p>[lists of hospitals near you]</p>
+            <button>Navigation</button>
+        </div>
+        <div class="optionbox">
+            <p>Diagnosis</p>
+            <button>Download Chat</button>
+        </div>
+    </div>
+</div>
+
+  </div>
+</section>
+
+
+
+
+<!--About section  -->
+    <section class="about" id="about">
+      <h1 class="heading" >About us</h1>
+      <div class="row">
+        <div class="aboutimage">
+          <img src="photos/3026238.jpg" alt=" About us">
+        </div>
+        <div class="content">
+          <h3>Welcome to CarePilotYour AI Healthcare Companion.</h3>
+          <p>CarePilot helps you get quick medical support by analyzing your symptoms, providing smart AI-based responses, and guiding you to nearby hospitals. You can chat with our AI doctor, upload images for better diagnosis, and download detailed symptom reports.</p>
+          <p>Whether it's urgent care or a general health query, CarePilot is here to assist you—fast, reliable, and confidential.</p>
+          <a href="#" class="btns"></a>
+        </div>
+      </div>
+    </section>
+
+    <!--Footer section  -->
+    <footer id="footer" class="section-p">
+            <main id="footer-container">
+                <div class="col">
+                    <h3 style="margin-left: 5px;" class="logo-title">CarePilot</h3>
+                </div>
+                <div class="col" id="about-main">
+                    <a class="title">About Us</a>
+                    <div class="footer-links">
+                        <a>Our Story</a>
+                        <a>Meet the Team: <br>Zaid Khan<br> Harsh Yadav <br> Harkiran Kaur <br> Deepak Yadav <br> Abhishek Verma
+                        </a>
+                        <a>Careers</a>
+                    </div>
+                </div>
+                <div class="col">
+                    <h4 class="title">Our Services</h4>
+                    <div class="footer-links">
+                        <a href="/services">What We Offer</a>
+                        <a href="/pricing">Pricing</a>
+                        <a href="/support">Customer Support</a>
+                    </div>
+                </div>
+                <div id="footer-social" class="col">
+                    <h4 class="title">Support</h4>
+                    <div class="footer-links">
+                        <a href="/faq">FAQs</a>
+                        <a href="/contact">Contact Us</a>
+                        <a href="/Number">+91 8439213771</a>
+                    </div>
+                </div>
+                <div class="col social">
+                    <button style="margin-right: 5px;" class="footer-logIn">
+                        <Link to='/login'>Log In</Link>
+                    </button>
+                </div>
+            </main>
+
+            <section id="footer-bottom">
+                <div style="margin-left: 5px;" class="copyright">
+                    <small>© 2024 Your Company. All Rights Reserved.</small>
+                </div>
+                <div style="margin-right: 5px;" class="privacy">
+                    <a>Privacy Policy</a>
+                    <a>Terms of Service</a>
+                    <a>Cookies Policy</a>
+                </div>
+            </section>
+        </footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+function startNewChat() {
+    alert("Starting a new chat...");
+}
+
+function loadChat(chatId) {
+    alert("Loading " + chatId);
+}
+</script>
+</body>
+</html>
