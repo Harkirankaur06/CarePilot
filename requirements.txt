@@ -1,0 +1,8 @@
+Flask
+nltk
+requests
+spellchecker
+textblob
+random
+nltk.chat.util
+flask_cors
