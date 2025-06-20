@@ -16,7 +16,7 @@ CORS(app)
 
 @app.route("/")
 def index():
-    return send_from_directory(".", "carepilot.html")
+    return send_from_directory(".", "index.html")
 
 @app.route("/<path:filename>")
 def static_files(filename):
