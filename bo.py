@@ -32,6 +32,17 @@ stress_relief_suggestions = [
     "Talk to someone you trust about how you feel."
 ]
 
+# Symptom to severity + response map
+symptom_responses = {
+    "headache":      ("mild",     "You might have a headache. Stay hydrated and rest in a quiet space."),
+    "nausea":        ("mild",     "Nausea could be from fatigue or stress. Light meals and fluids help."),
+    "fatigue":       ("moderate", "Ongoing fatigue might need medical attention. Track your sleep and diet."),
+    "cough":         ("moderate", "Is your cough dry or wet? If it lasts more than 3 days, consider a check-up."),
+    "fever":         ("moderate", "Monitor your temperature. Over 101°F for more than 24 hrs? Consult a doctor."),
+    "shortness of breath": ("severe", "This can be serious. Please seek urgent medical help."),
+    "chest pain":    ("severe",   "Chest pain is a red flag. Please go to the emergency room immediately."),
+}
+
 # Function for sentiment analysis
 def analyze_sentiment(text):
     analysis = TextBlob(text)
@@ -43,15 +54,21 @@ def suggest_stress_relief():
 
 # Function to handle user input and generate a response
 def custom_response(user_input):
-    # Check sentiment
+    input_lower = user_input.lower()
+    matched = []
+
+    for keyword, (severity, response) in symptom_responses.items():
+        if keyword in input_lower:
+            matched.append(f"[{severity.upper()}] {response}")
+
+    if matched:
+        return " ".join(matched)
+
     sentiment = analyze_sentiment(user_input)
-    
-    # If the sentiment is negative (indicating stress)
     if sentiment < 0:
         return suggest_stress_relief()
-    
-    # Fallback response if no specific pattern matched
-    return "I'm here to help. Please share more about how you're feeling."
+
+    return "I'm here to help. Please tell me more about what you're feeling."
 
 # Create Chatbot
 pairs = [
@@ -72,4 +89,4 @@ while True:
     corrected_input = ' '.join([spell.candidates(word).pop() if spell.candidates(word) else word for word in user_input.split()])
     
     response = custom_response(corrected_input)
-    print(f"Bot: {response}")
+    print(f"Bo: {response}")
