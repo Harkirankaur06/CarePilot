@@ -3,7 +3,6 @@ nltk
 requests
 spellchecker
 textblob
-random
 nltk.chat.util
 flask-cors
 gunicorn
