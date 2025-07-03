@@ -5,5 +5,5 @@ spellchecker
 textblob
 random
 nltk.chat.util
-flask_cors
+flask-cors
 gunicorn
