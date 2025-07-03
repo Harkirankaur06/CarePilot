@@ -3,6 +3,5 @@ nltk
 requests
 spellchecker
 textblob
-nltk.chat.util
 flask-cors
 gunicorn
