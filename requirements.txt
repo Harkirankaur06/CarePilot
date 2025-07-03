@@ -6,3 +6,4 @@ textblob
 random
 nltk.chat.util
 flask_cors
+gunicorn
