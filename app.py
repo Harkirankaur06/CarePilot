@@ -16,6 +16,11 @@ def index():
 def static_files(filename):
     return send_from_directory("static", filename)
 
+# login page
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
 # Chat route
 @app.route("/chat", methods=["POST"])
 def chat():
