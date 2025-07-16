@@ -1,10 +1,16 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from supabase import create_client, Client
 import os
 import bo
 
 app = Flask(__name__)
 CORS(app)
+
+url = os.getenv("https://sbrdjjmzhjpvstemijlc.supabase.co")
+key = os.getenv("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNicmRqam16aGpwdnN0ZW1pamxjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NzA0MzgsImV4cCI6MjA2ODI0NjQzOH0.iGLLFZzrNLg6h9ribuINkocqaT6f0hwKXPCFuyXCW28")
+
+supabase: Client = create_client(url, key)
 
 # Serve index.html
 @app.route("/")
@@ -17,9 +23,21 @@ def static_files(filename):
     return send_from_directory("static", filename)
 
 # login page
-@app.route("/login")
+@app.route('/login', methods=['POST'])
 def login():
-    return render_template("login.html")
+    email = request.form['email']
+    password = request.form['password']
+
+    result = supabase.auth.sign_in_with_password({
+        "email": email,
+        "password": password
+    })
+
+    if result.user:
+        session['user'] = result.user.id
+        return redirect(url_for('dashboard'))
+    else:
+        return "Login failed"
 
 # Chat route
 @app.route("/chat", methods=["POST"])
