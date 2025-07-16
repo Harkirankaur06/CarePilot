@@ -5,6 +5,6 @@ pyspellchecker
 textblob
 flask-cors
 gunicorn
-supabse
+supabase
 python-dotenv
 hashlib
