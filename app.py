@@ -26,6 +26,7 @@ def static_files(filename):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    return render_template('logincp.html')
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
