@@ -7,4 +7,3 @@ flask-cors
 gunicorn
 supabase
 python-dotenv
-hashlib
