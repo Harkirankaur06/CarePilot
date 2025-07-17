@@ -89,13 +89,31 @@ def chat():
     data = request.get_json()
     user_input = data.get("message", "")
 
+    # Spell correction (from bo.py)
     corrected_input = ' '.join([
         next(iter(bo.spell.candidates(word)), word)
         for word in user_input.split()
     ])
 
+    # Get bot response
     response = bo.custom_response(corrected_input)
+
+    # Store chat in Supabase
+    supabase.table('chat_history').insert({
+        "email": session['user'],
+        "user_msg": user_input,
+        "bot_msg": response
+    }).execute()
+
     return jsonify({"reply": response})
+
+@app.route("/chat/history")
+def chat_history():
+    if 'user' not in session:
+        return redirect('/login')
+
+    response = supabase.table('chat_history').select('*').eq('email', session['user']).order('timestamp', desc=True).execute()
+    return render_template("chat_history.html", messages=response.data)
 
 
 # Main entry (for local testing only — Gunicorn is used in Railway)
