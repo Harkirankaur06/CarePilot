@@ -1,0 +1,9 @@
+Flask
+nltk
+requests
+pyspellchecker
+textblob
+flask-cors
+gunicorn
+supabase
+python-dotenv
