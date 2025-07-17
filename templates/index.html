@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarePilot</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='carepilot.css') }}">
+</head>
+
+<body>
+    <!-- Header section -->
+    <header class="header">
+        <a href="#" class="logo"> <i class="ri-service-fill"></i> CarePilot </a>
+        <nav class="navbar">
+            <a href="#home">HOME </a>
+            <a href="#about">ABOUT </a>
+            <a href="#footer">CONTACT </a>
+            <a href="{{ url_for('login') }}">
+                <button class="loginbtn">Log-in</button>
+            </a>
+        </nav>
+    </header>
+
+    <!-- Home Page -->
+    <section class="home" id="home">
+        <div class="container">
+            <div class="history">
+                <div class="history-header">
+                    <p>Chat History</p>
+                    <div class="history-icons">
+                        <i class="ri-search-line"></i>
+                        <i class="ri-edit-box-fill" title="New Chat" onclick="startNewChat()"></i>
+                    </div>
+                </div>
+                <div class="chat-list">
+                    <div class="chat-item" onclick="loadChat('Chat-1')">
+                        <p>Conversation with Serena</p>
+                        <span>10 May, 2025</span>
+                    </div>
+                    <div class="chat-item" onclick="loadChat('chat-2')">
+                        <p>Cold Symptoms</p>
+                        <span>8 May, 2025</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chatpanel">
+                <div class="chatbox">
+                    <div class="chat-header">
+                         <span>Hi, I'm Serena - Your AI Healthcare Assistant🩺</span>
+                    </div>
+                    <hr class="serena-line">
+
+                    <div id="chatOutput"></div>
+
+                    <div class="inputarea">
+                        <input type="text" id="chatInput" placeholder="Type here…">
+                        <button id="sendBtn"><i class="ri-send-plane-fill"></i></button>
+                    </div>
+
+                    <div class="chatbuttons">
+                        <button id="uploadBtn">Upload Images</button>
+                        <input type="file" id="imageInput" style="display: none;" multiple>
+                        <button id="downloadBtn">Download Chat</button>
+                    </div>
+                </div>
+
+                <div class="options">
+                    <div class="optionbox">
+                        <p>Hospitals near by</p>
+                        <button onclick="showMap()">Navigation</button>
+                    </div>
+
+                    <div class="optionbox">
+                        <p>Diagnosis</p>
+                        <button id="diagnosisDownloadBtn">Download Chat</button>
+                    </div>
+
+                    <div id="map-container" class="map-hidden">
+                        <iframe id="map-frame" width="100%" height="400" style="border:0; border-radius: 10px;" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About section -->
+    <section class="about" id="about">
+        <h1 class="heading">About us</h1>
+        <div class="row">
+            <div class="aboutimage">
+                <img src="photos/3026238.jpg" alt=" About us">
+            </div>
+            <div class="content">
+                <h3>Welcome to CarePilot — Your AI Healthcare Companion.</h3>
+                <p>CarePilot helps you get quick medical support by analyzing your symptoms, providing smart AI-based responses, and guiding you to nearby hospitals. You can chat with our AI doctor, upload images for better diagnosis, and download detailed symptom reports.</p>
+                <p>Whether it's urgent care or a general health query, CarePilot is here to assist you—fast, reliable, and confidential.</p>
+                <a href="#" class="btns"></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" class="section-p">
+        <main id="footer-container">
+            <div class="col">
+                <h3 class="logo-title">CarePilot</h3>
+            </div>
+            <div class="col" id="about-main">
+                <a class="title">About Us</a>
+                <div class="footer-links">
+                    <a>Our Story</a>
+                    <a>Meet the Team: <br>Zaid Khan<br> Harsh Yadav <br> Harkiran Kaur</a>
+                    <a>Careers</a>
+                </div>
+            </div>
+            <div class="col">
+                <h4 class="title">Our Services</h4>
+                <div class="footer-links">
+                    <a href="/services">What We Offer</a>
+                    <a href="/pricing">Pricing</a>
+                    <a href="/support">Customer Support</a>
+                </div>
+            </div>
+            <div id="footer-social" class="col">
+                <h4 class="title">Support</h4>
+                <div class="footer-links">
+                    <a href="/faq">FAQs</a>
+                    <a href="/contact">Contact Us</a>
+                    <a href="/Number">+91 8439213771</a>
+                </div>
+            </div>
+            <div class="col social">
+                <a href="{{ url_for('login') }}">
+                    <button class="footer-logIn">Log-in</button>
+                </a>
+            </div>
+        </main>
+
+        <section id="footer-bottom">
+            <div class="copyright">
+                <small>© 2025 THUNDERBOLTS. All Rights Reserved.</small>
+            </div>
+            <div class="privacy">
+                <a>Privacy Policy</a>
+                <a>Terms of Service</a>
+                <a>Cookies Policy</a>
+            </div>
+        </section>
+    </footer>
+
+    <script>
+        function startNewChat() {
+            alert("Starting a new chat...");
+        }
+
+        function loadChat(chatId) {
+            alert("Loading " + chatId);
+        }
+
+        function showMap() {
+            const mapContainer = document.getElementById('map-container');
+            const mapFrame = document.getElementById('map-frame');
+
+            if (!mapFrame.src) {
+                mapFrame.src = "https://www.google.com/maps?q=hospitals+near+me&output=embed";
+            }
+
+            mapContainer.classList.toggle('map-visible');
+        }
+
+        const chatInput = document.getElementById('chatInput');
+        const chatOutput = document.getElementById('chatOutput');
+        const sendBtn = document.getElementById('sendBtn');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const imageInput = document.getElementById('imageInput');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const diagnosisDownloadBtn = document.getElementById('diagnosisDownloadBtn');
+
+        let chatHistory = [];
+
+        sendBtn.addEventListener('click', () => {
+            const message = chatInput.value.trim();
+            if (message) {
+                chatOutput.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+                chatHistory.push(`You: ${message}`);
+                chatInput.value = '';
+            }
+        });
+
+        uploadBtn.addEventListener('click', () => {
+            imageInput.click();
+        });
+
+        imageInput.addEventListener('change', () => {
+            const files = imageInput.files;
+            if (files.length > 0) {
+                for (let file of files) {
+                    chatOutput.innerHTML += `<p><strong>You uploaded:</strong> ${file.name}</p>`;
+                    chatHistory.push(`Image uploaded: ${file.name}`);
+                }
+            }
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            const blob = new Blob([chatHistory.join('\n')], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'chat_history.txt';
+            a.click();
+        });
+
+        diagnosisDownloadBtn.addEventListener('click', () => {
+            const blob = new Blob([chatHistory.join('\n')], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'diagnosis_chat.txt';
+            a.click();
+        });
+    </script>
+</body>
+
+</html>
