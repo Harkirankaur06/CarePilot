@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, render_template, redirect, session
 from flask_cors import CORS
 from supabase import create_client, Client
 import os
@@ -17,25 +17,28 @@ SUPABASE_URL = "https://sbrdjjmzhjpvstemijlc.supabase.co"
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-# Serve index.html
 @app.route("/")
 def index():
-    return send_from_directory("template", "index.html")
-
-# Serve static files (JS, CSS, images)
-@app.route("/<path:filename>")
-def static_files(filename):
-    return send_from_directory("static", filename)
+    return render_template("index.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        if not email or not password:
+            return "Missing email or password."
+
         hashed_pw = hashlib.sha256(password.encode()).hexdigest()
 
+        # Debug print to see values in terminal
+        print(f"[DEBUG] Login Attempt: {email} / {hashed_pw}")
+
+        # Supabase check
         response = supabase.table('users').select('*').eq('email', email).eq('password', hashed_pw).execute()
+
+        print(f"[DEBUG] Supabase Response: {response.data}")
 
         if response.data:
             session['user'] = email
@@ -43,23 +46,31 @@ def login():
         else:
             return "Login failed. Check email or password."
 
-    return send_from_directory("template",'logincp.html')
+    # GET request — just show the form
+    return render_template("logincp.html")
+
 
 @app.route('/register', methods=['POST'])
 def register():
-    name = request.form['name']
-    email = request.form['email']
-    password = request.form['password']
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    if not name or not email or not password:
+        return "Missing fields."
+
     hashed_pw = hashlib.sha256(password.encode()).hexdigest()
 
-    # Save to Supabase
-    supabase.table('users').insert({
+    # Insert into Supabase
+    response = supabase.table('users').insert({
         "name": name,
         "email": email,
         "password": hashed_pw
     }).execute()
 
+    print(f"[DEBUG] Supabase register response: {response.data}")
     return redirect('/login')
+
 
 @app.route('/afterlogin')
 def afterlogin():
@@ -72,18 +83,20 @@ def afterlogin():
 # Chat route
 @app.route("/chat", methods=["POST"])
 def chat():
+    if 'user' not in session:
+        return jsonify({"error": "Unauthorized. Please log in first."}), 401
+
     data = request.get_json()
     user_input = data.get("message", "")
 
-    # Safe spell correction
     corrected_input = ' '.join([
         next(iter(bo.spell.candidates(word)), word)
         for word in user_input.split()
     ])
 
-    # Generate chatbot response
     response = bo.custom_response(corrected_input)
     return jsonify({"reply": response})
+
 
 # Main entry (for local testing only — Gunicorn is used in Railway)
 if __name__ == "__main__":
