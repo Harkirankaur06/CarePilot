@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, render_template, redirect, session
+from flask import Flask
 from flask_cors import CORS
 from supabase import create_client, Client
 import os
