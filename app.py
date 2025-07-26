@@ -14,7 +14,7 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', os.urandom(24))
 #SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNicmRqam16aGpwdnN0ZW1pamxjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2NzA0MzgsImV4cCI6MjA2ODI0NjQzOH0.iGLLFZzrNLg6h9ribuINkocqaT6f0hwKXPCFuyXCW28"
-SUPABASE_URL = "https://sbrdjjmzhjpvstemijlc.supabase.co"
+SUPABASE_URL = "https://sbrdjjmzhjpvstemijlc.supabase.co/"
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
@@ -38,8 +38,6 @@ def login():
 
         # Supabase check
         response = supabase.table('users').select('*').eq('email', email).eq('password', hashed_pw).execute()
-
-        print(f"[DEBUG] Supabase Response: {response.data}")
 
         if response.data:
             session['user'] = email
@@ -76,7 +74,7 @@ def register():
 @app.route('/afterlogin')
 def afterlogin():
     if 'user' in session:
-        return f"Welcome {session['user']}!"
+        return render_template("index.html", user=session['user'])
     else:
         return redirect('/login')
 
