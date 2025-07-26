@@ -4,6 +4,47 @@ from spellchecker import SpellChecker
 from textblob import TextBlob
 import random
 import os
+import joblib
+import pandas as pd
+
+# Load model and feature order
+model = joblib.load("disease_model.pkl")
+feature_order = joblib.load("feature_order.pkl")
+
+# Mapping dictionaries
+gender_map = {"male": 0, "female": 1}
+binary_map = {"yes": 1, "no": 0}
+bp_map = {"low": 0, "normal": 1, "high": 2}
+chol_map = {"low": 0, "normal": 1, "high": 2}
+def predict_disease_from_text(text):
+    try:
+        # Example expected input:
+        # "Gender: Female, Age: 40, Fever: Yes, Cough: Yes, Fatigue: No, Difficulty Breathing: No, Blood Pressure: Normal, Cholesterol Level: High"
+        input_dict = {}
+        for item in text.split(","):
+            key, value = item.split(":")
+            input_dict[key.strip().lower()] = value.strip().lower()
+
+        # Convert to model input
+        data = {
+            "Gender": gender_map.get(input_dict.get("gender"), 0),
+            "Age": int(input_dict.get("age", 0)),
+            "Fever": binary_map.get(input_dict.get("fever"), 0),
+            "Cough": binary_map.get(input_dict.get("cough"), 0),
+            "Fatigue": binary_map.get(input_dict.get("fatigue"), 0),
+            "Difficulty Breathing": binary_map.get(input_dict.get("difficulty breathing"), 0),
+            "Blood Pressure": bp_map.get(input_dict.get("blood pressure"), 1),
+            "Cholesterol Level": chol_map.get(input_dict.get("cholesterol level"), 1),
+        }
+
+        df = pd.DataFrame([data])[feature_order]
+        prediction = model.predict(df)[0]
+
+        return f"Based on your symptoms, the predicted disease is: **{prediction}**."
+
+    except Exception as e:
+        return f"Sorry, I couldn't process your input. Error: {str(e)}"
+
 
 # Download once only (optional: you can preload in build step instead)
 nltk.download('punkt', quiet=True)

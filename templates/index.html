@@ -113,7 +113,7 @@
                 <a class="title">About Us</a>
                 <div class="footer-links">
                     <a>Our Story</a>
-                    <a>Meet the Team: <br>Zaid Khan<br> Harsh Yadav <br> Harkiran Kaur</a>
+                    <a>Meet the Team: <br>Tanishka Nagpal<br>Zaid Khan<br> Harsh Yadav <br> Harkiran Kaur</a>
                     <a>Careers</a>
                 </div>
             </div>
@@ -183,13 +183,43 @@
         let chatHistory = [];
 
         sendBtn.addEventListener('click', () => {
-            const message = chatInput.value.trim();
-            if (message) {
-                chatOutput.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
-                chatHistory.push(`You: ${message}`);
-                chatInput.value = '';
-            }
-        });
+    const message = chatInput.value.trim();
+    if (message) {
+        chatOutput.innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+        chatHistory.push(`You: ${message}`);
+        chatInput.value = '';
+
+        // Send the message to the Flask backend
+                    fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        chatOutput.innerHTML += `<p><strong>Serena:</strong> You need to log in to continue chatting.</p>`;
+                        return;
+                    }
+                    throw new Error("Something went wrong");
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.reply) {
+                    chatOutput.innerHTML += `<p><strong>Serena:</strong> ${data.reply}</p>`;
+                    chatHistory.push(`Serena: ${data.reply}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                chatOutput.innerHTML += `<p><strong>Serena:</strong> Sorry, something went wrong.</p>`;
+            });
+    }
+});
+
 
         uploadBtn.addEventListener('click', () => {
             imageInput.click();
